@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # 1. ส่วนของเว็บไซต์ (Web Server + PHP 8.2)
+  web:
+    build: .  # อ่านคำสั่งจาก Dockerfile ที่เราเพิ่งสร้าง
+    ports:
+      - "8081:80" # เข้าเว็บผ่าน localhost:8080
+    volumes:
+      - ./html:/var/www/html # เชื่อมโฟลเดอร์โค้ด
+    depends_on:
+      - db
+  # 2. ส่วนของฐานข้อมูล (MariaDB - เหมือนใน XAMPP)
+  db:
+    image: mariadb:10.6
+    environment:
+      MYSQL_ROOT_PASSWORD: root # รหัสผ่าน root (ปกติ XAMPP ไม่มี แต่ใน Docker ต้องตั้ง)
+      MYSQL_DATABASE: repairbncc_db # <--- แก้ชื่อ DB ให้ตรงกับของคุณตรงนี้!!!
+    volumes:
+      - ./mysql_data:/var/lib/mysql # ที่เก็บข้อมูลถาวร
+      - ./db_import:/docker-entrypoint-initdb.d # โฟลเดอร์สำหรับ Import SQL อัตโนมัติ
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+     - "8082:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+    depends_on:
+      - db
