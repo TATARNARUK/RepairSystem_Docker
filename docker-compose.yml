@@ -7,7 +7,7 @@ services:
     ports:
       - "8081:80" # เข้าเว็บผ่าน localhost:8080
     volumes:
-      - ./html:/var/www/html # เชื่อมโฟลเดอร์โค้ด
+      - - ./src:/var/www/html # เชื่อมโฟลเดอร์โค้ด
     depends_on:
       - db
   # 2. ส่วนของฐานข้อมูล (MariaDB - เหมือนใน XAMPP)

@@ -1,0 +1,4 @@
+mysql_data/
+my_sqldata/
+.env
+.DS_Store
